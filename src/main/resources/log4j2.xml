@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Properties>
+        <Property name="filename">${date:yyyy-MM-dd HH-mm-ss}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} %-5level [%t] %logger{1}:%line - %msg%n"/>
+        </Console>
+
+        <File name="FileError" fileName="logs/error/${filename}.log" immediateFlush="false" advertise="true">
+            <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} %-5level [%t] %logger{1}:%line - %msg%n"/>
+        </File>
+
+        <File name="FileDebug" fileName="logs/debug/${filename}.log" immediateFlush="false" advertise="true">
+            <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss.SSS} %-5level [%t] %logger{1}:%line - %msg%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="all" additivity="false">
+            <AppenderRef ref="Console" level="all"/>
+            <AppenderRef ref="FileError" level="error"/>
+            <AppenderRef ref="FileDebug" level="debug"/>
+        </Root>
+    </Loggers>
+</Configuration>
