@@ -8,7 +8,7 @@ import store.vxdesign.cryptography.framework.utilities.EnumUtils;
  */
 public enum AlgorithmType {
 
-    DATA_ENCRYPTION_STANDARD("des");
+    DATA_ENCRYPTION_STANDARD("des"), MERKLE_HELLMAN("mh");
 
     private final String name;
 
