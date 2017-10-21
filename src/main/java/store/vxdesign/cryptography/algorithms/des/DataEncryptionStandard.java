@@ -1,48 +1,48 @@
 package store.vxdesign.cryptography.algorithms.des;
 
-import store.vxdesign.cryptography.algorithms.Algorithm;
+import store.vxdesign.cryptography.algorithms.AbstractAlgorithm;
+import store.vxdesign.cryptography.framework.enums.Cipher;
 import store.vxdesign.cryptography.framework.utilities.ConverterUtils;
-
-import java.util.Arrays;
 
 /**
  * @author Roman Mashenkin
  * @since 17.10.2017
  */
-public final class DataEncryptionStandard implements Algorithm {
+public final class DataEncryptionStandard extends AbstractAlgorithm {
 
-    private final String input;
-    private final String[] binaryInputBlocks;
-    private final String key;
-    private final String binaryKeyBlock;
-
-    private String[] binaryOutputBlocks;
-
-    public DataEncryptionStandard(String input) {
-        this(input, DataEncryptionStandardUtils.generateKey());
-    }
-
-    public DataEncryptionStandard(String input, String key) {
-        this.input = input;
-        this.binaryInputBlocks = ConverterUtils.toBinaryStringBlocks(input, DataEncryptionStandardConstants.SIZE_OF_BLOCKS);
-        this.key = key;
-        this.binaryKeyBlock = ConverterUtils.toBinaryString(key);
+    @Override
+    public String cipher(Cipher cipher, String input) {
+        return cipher(cipher, input, DataEncryptionStandardUtils::generateKey);
     }
 
     @Override
-    public String encrypt() {
+    protected String encrypt(String input, String key) {
+        return cipherData(Cipher.ENCRYPT, input, key);
+    }
+
+    @Override
+    protected String decrypt(String input, String key) {
+        return cipherData(Cipher.DECRYPT, input, key);
+    }
+
+    private String cipherData(Cipher cipher, String input, String key) {
+        // Step 0: prepare for encryption/decryption
+        String[] binaryInputBlocks = ConverterUtils.toBinaryStringBlocks(input,
+                DataEncryptionStandardConstants.SIZE_OF_BLOCKS);
+        String binaryKeyBlock = ConverterUtils.toBinaryString(key);
+
         // Step 1: initial permutation
         String[] initialPermutation = DataEncryptionStandardUtils.executeInitialPermutation(binaryInputBlocks);
 
         // Step 2: preparing for Feitsel function
         String[][] l = FeitselFunction.prepareForFeitselFunction(
-                binaryInputBlocks,
+                binaryInputBlocks.length,
                 initialPermutation,
                 0,
                 DataEncryptionStandardConstants.SIZE_OF_BLOCKS / 2
         );
         String[][] r = FeitselFunction.prepareForFeitselFunction(
-                binaryInputBlocks,
+                binaryInputBlocks.length,
                 initialPermutation,
                 DataEncryptionStandardConstants.SIZE_OF_BLOCKS / 2
         );
@@ -67,30 +67,22 @@ public final class DataEncryptionStandard implements Algorithm {
         );
 
         // Step 6: execute Feitsel function
-        FeitselFunction.executeFeitselFunction(binaryInputBlocks, roundKeysPermutation, l, r);
+        FeitselFunction.executeFeitselFunction(binaryInputBlocks.length, roundKeysPermutation, l, r, cipher);
 
         // Step 7: final permutation
-        String[] preparingFinalPermutation = DataEncryptionStandardUtils.prepareFinalPermutation(binaryInputBlocks, l, r);
-        binaryOutputBlocks = DataEncryptionStandardUtils.executeFinalPermutation(preparingFinalPermutation);
+        String[] preparingFinalPermutation = DataEncryptionStandardUtils.prepareFinalPermutation(
+                binaryInputBlocks.length,
+                l,
+                r
+        );
+        String[] binaryOutputBlocks = DataEncryptionStandardUtils.executeFinalPermutation(preparingFinalPermutation);
 
-        return DataEncryptionStandardUtils.getResult(
+        return DataEncryptionStandardUtils.getStringResult(
                 input,
                 binaryInputBlocks,
                 key,
                 binaryKeyBlock,
-                binaryOutputBlocks,
-                DataEncryptionStandardConstants.SIZE_OF_BLOCKS
+                binaryOutputBlocks
         );
-    }
-
-    @Override
-    public String toString() {
-        return "DataEncryptionStandard [" +
-                "input='" + input + '\'' +
-                ", key='" + key + '\'' +
-                ", binaryInputBlocks=" + Arrays.toString(binaryInputBlocks) +
-                ", binaryKeyBlock='" + binaryKeyBlock + '\'' +
-                ", binaryOutputBlocks=" + Arrays.toString(binaryOutputBlocks) +
-                ']';
     }
 }

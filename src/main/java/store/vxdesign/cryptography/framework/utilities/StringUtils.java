@@ -17,6 +17,10 @@ public final class StringUtils {
     private StringUtils() {
     }
 
+    public static String capitalize(String lower) {
+        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1).toLowerCase();
+    }
+
     public static String divideOnBlocksPattern(int blockSize) {
         return String.format("(?<=\\G.{%d})", blockSize);
     }

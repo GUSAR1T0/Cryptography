@@ -76,9 +76,9 @@ final class DataEncryptionStandardUtils {
         );
     }
 
-    static String[] prepareFinalPermutation(String[] binaryInputBlocks, String[][] l, String[][] r) {
-        String[] preparingFinalPermutation = new String[binaryInputBlocks.length];
-        for (int i = 0; i < binaryInputBlocks.length; i++) {
+    static String[] prepareFinalPermutation(int binaryInputBlocksLength, String[][] l, String[][] r) {
+        String[] preparingFinalPermutation = new String[binaryInputBlocksLength];
+        for (int i = 0; i < binaryInputBlocksLength; i++) {
             preparingFinalPermutation[i] = String.format(
                     "%s%s",
                     r[i][DataEncryptionStandardConstants.COUNT_OF_ROUNDS],
@@ -100,18 +100,18 @@ final class DataEncryptionStandardUtils {
         return builder.toString();
     }
 
-    static String getResult(String input, String[] binaryInputBlocks, String key, String binaryKeyBlock, String[] binaryOutputBlocks, int blockSize) {
+    static String getStringResult(String input, String[] binaryInputBlocks, String key, String binaryKeyBlock, String[] binaryOutputBlocks) {
         Map<DataEncryptionStandardResultType, String> resultMap = new EnumMap<>(DataEncryptionStandardResultType.class);
 
         resultMap.put(DataEncryptionStandardResultType.TEXT_INPUT, input);
         resultMap.put(DataEncryptionStandardResultType.BINARY_INPUT, Arrays.stream(binaryInputBlocks).collect(Collectors.joining()));
-        resultMap.put(DataEncryptionStandardResultType.HEX_INPUT, ConverterUtils.toHexString(binaryInputBlocks, blockSize));
+        resultMap.put(DataEncryptionStandardResultType.HEX_INPUT, ConverterUtils.toHexString(binaryInputBlocks));
         resultMap.put(DataEncryptionStandardResultType.TEXT_KEY, key);
         resultMap.put(DataEncryptionStandardResultType.BINARY_KEY, binaryKeyBlock);
-        resultMap.put(DataEncryptionStandardResultType.HEX_KEY, ConverterUtils.toHexString(new String[]{binaryKeyBlock}, blockSize));
-        resultMap.put(DataEncryptionStandardResultType.TEXT_OUTPUT, ConverterUtils.toTextString(binaryOutputBlocks, blockSize));
+        resultMap.put(DataEncryptionStandardResultType.HEX_KEY, ConverterUtils.toHexString(new String[]{binaryKeyBlock}));
+        resultMap.put(DataEncryptionStandardResultType.TEXT_OUTPUT, ConverterUtils.toTextString(binaryOutputBlocks));
         resultMap.put(DataEncryptionStandardResultType.BINARY_OUTPUT, Arrays.stream(binaryOutputBlocks).collect(Collectors.joining()));
-        resultMap.put(DataEncryptionStandardResultType.HEX_OUTPUT, ConverterUtils.toHexString(binaryOutputBlocks, blockSize));
+        resultMap.put(DataEncryptionStandardResultType.HEX_OUTPUT, ConverterUtils.toHexString(binaryOutputBlocks));
 
         return resultMap.entrySet().stream().map(StringUtils::createLineFromEntry).collect(Collectors.joining());
     }

@@ -2,7 +2,8 @@ package store.vxdesign.cryptography.framework.files;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import store.vxdesign.cryptography.algorithms.AlgorithmType;
+import store.vxdesign.cryptography.framework.enums.AlgorithmType;
+import store.vxdesign.cryptography.framework.enums.Cipher;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +24,8 @@ public final class FilesReader {
 
     private static final Logger LOGGER = LogManager.getLogger(FilesReader.class);
     private static final String RESOURCES_DIRECTORY = "src/main/resources/";
-    private static final String ENCRYPT_DIRECTORY = Paths.get(RESOURCES_DIRECTORY, "encrypt").toString();
+    private static final String ENCRYPT_DIRECTORY = Paths.get(RESOURCES_DIRECTORY, Cipher.ENCRYPT.name().toLowerCase()).toString();
+    private static final String DECRYPT_DIRECTORY = Paths.get(RESOURCES_DIRECTORY, Cipher.DECRYPT.name().toLowerCase()).toString();
 
     /**
      * Hidden constructor.
@@ -31,21 +33,33 @@ public final class FilesReader {
     private FilesReader() {
     }
 
-    public static List<FileProperties> readFiles(String[] paths) throws FileNotFoundException {
+    public static List<FileProperties> readFiles(Cipher cipher, String[] paths) throws FileNotFoundException {
         List<File> files = Arrays.stream(paths).map(File::new).collect(Collectors.toList());
         List<FileProperties> filePropertiesList = new ArrayList<>();
 
         if (files.isEmpty()) {
-            files.addAll(getAllFilesFromEncryptDirectory());
+            switch (cipher) {
+                case ENCRYPT:
+                    files.addAll(getAllFilesFromEncryptDirectory());
+                    break;
+                case DECRYPT:
+                    files.addAll(getAllFilesFromDecryptDirectory());
+                    break;
+                case ALL:
+                    files.addAll(getAllFilesFromEncryptDirectory());
+                    files.addAll(getAllFilesFromDecryptDirectory());
+                    break;
+            }
         }
 
         for (File file : files) {
             if (file.exists() && file.isFile()) {
                 String filenameWithoutExtension = getFilenameWithoutExtension(file);
+                Cipher cipherForFile = !cipher.equals(Cipher.ALL) ? cipher : getCipher(file);
                 FileProperties fileProperties = filePropertiesList.stream()
                         .filter(properties -> properties.getFilename().equals(filenameWithoutExtension))
                         .findFirst()
-                        .orElse(new FileProperties(filenameWithoutExtension, file.getParent()));
+                        .orElse(new FileProperties(filenameWithoutExtension, file.getParent(), cipherForFile));
 
                 FileExtension extension = getFileExtensionInstance(file);
                 if (FileExtension.TEXT.equals(extension)) {
@@ -69,12 +83,20 @@ public final class FilesReader {
     }
 
     private static List<File> getAllFilesFromEncryptDirectory() {
-        File directory = new File(ENCRYPT_DIRECTORY);
-        if (directory.exists() && directory.isDirectory()) {
-            String[] files = directory.list();
+        return getAllFilesFromDirectory(ENCRYPT_DIRECTORY);
+    }
+
+    private static List<File> getAllFilesFromDecryptDirectory() {
+        return getAllFilesFromDirectory(DECRYPT_DIRECTORY);
+    }
+
+    private static List<File> getAllFilesFromDirectory(String directory) {
+        File dir = new File(directory);
+        if (dir.exists() && dir.isDirectory()) {
+            String[] files = dir.list();
             if (files != null && files.length > 0) {
                 return Arrays.stream(files)
-                        .map(filename -> Paths.get(ENCRYPT_DIRECTORY, filename).toFile())
+                        .map(filename -> Paths.get(directory, filename).toFile())
                         .collect(Collectors.toList());
             } else {
                 String message = files == null ? "could not list of directory" : "directory is empty";
@@ -84,9 +106,9 @@ public final class FilesReader {
             throw new RuntimeException(
                     String.format(
                             "Failed to get files from resources directory: path='%s', exists='%b', is_directory='%b'.",
-                            directory.getPath(),
-                            directory.exists(),
-                            directory.isDirectory()
+                            dir.getPath(),
+                            dir.exists(),
+                            dir.isDirectory()
                     )
             );
         }
@@ -133,5 +155,11 @@ public final class FilesReader {
             LOGGER.error("Failed to define file extension: '{}'.", file.getPath());
         }
         return null;
+    }
+
+    private static Cipher getCipher(File file) {
+        String[] parent = file.getParent().split("\\\\");
+        Cipher cipher = Cipher.value(parent[parent.length - 1]);
+        return cipher != null && !cipher.equals(Cipher.ALL) ? cipher : null;
     }
 }

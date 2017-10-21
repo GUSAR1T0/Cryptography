@@ -46,12 +46,12 @@ public final class ConverterUtils {
         return builder.toString();
     }
 
-    public static String toTextString(String[] binaryStringBlocks, int blockSize) {
+    public static String toTextString(String[] binaryStringBlocks) {
         StringBuilder builder = new StringBuilder();
 
         for (String block : binaryStringBlocks) {
             builder.append(
-                    Arrays.stream(block.split(StringUtils.divideOnBlocksPattern( blockSize / Byte.SIZE)))
+                    Arrays.stream(block.split(StringUtils.divideOnBlocksPattern(Byte.SIZE)))
                             .map(s -> ((char) Integer.parseInt(s, 2)) + "")
                             .collect(Collectors.joining())
             );
@@ -60,12 +60,12 @@ public final class ConverterUtils {
         return builder.toString();
     }
 
-    public static String toHexString(String[] binaryStringBlocks, int blockSize) {
+    public static String toHexString(String[] binaryStringBlocks) {
         StringBuilder builder = new StringBuilder();
 
         for (String block : binaryStringBlocks) {
             builder.append(
-                    Arrays.stream(block.split(StringUtils.divideOnBlocksPattern( blockSize / Byte.SIZE)))
+                    Arrays.stream(block.split(StringUtils.divideOnBlocksPattern(Byte.SIZE)))
                             .map(s ->
                                     String.format("%2s", Integer.toHexString(Integer.parseInt(s, 2)))
                                             .replaceAll("\\s", "0")

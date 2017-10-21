@@ -4,16 +4,16 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import store.vxdesign.cryptography.algorithms.Algorithm;
-import store.vxdesign.cryptography.algorithms.AlgorithmType;
+import store.vxdesign.cryptography.framework.enums.AlgorithmType;
 import store.vxdesign.cryptography.algorithms.des.DataEncryptionStandard;
 import store.vxdesign.cryptography.algorithms.mh.MerkleHellman;
 import store.vxdesign.cryptography.framework.cli.CommandLineInterface;
+import store.vxdesign.cryptography.framework.enums.Cipher;
 import store.vxdesign.cryptography.framework.files.FileProperties;
 import store.vxdesign.cryptography.framework.files.FilesReader;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * @author Roman Mashenkin
@@ -26,51 +26,63 @@ public class Main {
     public static void main(String[] args) throws IOException {
         CommandLine cmd = new CommandLineInterface(args).getParsedArguments();
 
+        Cipher cipher = Cipher.value(cmd.getOptionValue('c'));
         String[] paths = cmd.getOptionValues('p');
-        if (paths == null || paths.length > 0) {
-            LOGGER.warn("Program will choose files from encrypt directory by default.");
+        if (cipher == null) {
+            LOGGER.warn("Program will encrypt and decrypt files by default.");
+            cipher = Cipher.ALL;
             paths = new String[]{};
+        } else {
+            if (!cipher.equals(Cipher.ALL)) {
+                if (paths == null || paths.length == 0) {
+                    LOGGER.warn("Program will choose files from {} directory by default.", cipher);
+                    paths = new String[]{};
+                }
+            } else {
+                LOGGER.warn("Program will ignore entered paths because cipher was set for encryption and decryption.");
+                paths = new String[]{};
+            }
         }
 
-        List<FileProperties> filePropertiesList = FilesReader.readFiles(paths);
+        List<FileProperties> filePropertiesList = FilesReader.readFiles(cipher, paths);
         for (AlgorithmType type: AlgorithmType.values()) {
-            filePropertiesList.stream().filter(properties -> type.equals(properties.getAlgorithmType()))
+            filePropertiesList.stream().filter(properties ->
+                    type.equals(properties.getAlgorithmType()) && ((Cipher.DECRYPT.equals(
+                            properties.getCipher()) &&
+                            properties.getKey() != null &&
+                            !properties.getKey().isEmpty()
+                    ) || Cipher.ENCRYPT.equals(properties.getCipher())))
                     .forEach(properties -> {
                         try {
-                            LOGGER.debug("Prepare to encrypt: '{}'.", properties);
-                            Algorithm algorithm = getAlgorithmInstance(type, properties, cmd.hasOption('k'));
-                            LOGGER.debug("Start to encrypt: '{}'.", properties);
-                            String result = algorithm.encrypt();
-                            LOGGER.debug("Encryption result of '{}' is:\n\n{}", properties, result);
+                            LOGGER.debug("Prepare to {}: '{}'.", properties.getCipher().getName(false), properties);
+                            Algorithm algorithm = getAlgorithmInstance(type);
+                            LOGGER.debug("Start to {}: '{}'.", properties.getCipher().getName(false), properties);
+                            String result = getResult(algorithm, properties, !Cipher.DECRYPT.equals(properties.getCipher()) && cmd.hasOption('k'));
+                            LOGGER.debug("{} is completed, result for '{}' is:\n\n{}",
+                                    properties.getCipher().getName(true), properties, result);
                         } catch (Exception e) {
-                            LOGGER.error("Encryption is failed: {}.", e.getMessage());
+                            LOGGER.error("{} is failed: {}.",
+                                    properties.getCipher().getName(true), e.fillInStackTrace());
                         }
                     });
         }
     }
 
-    private static Algorithm getAlgorithmInstance(AlgorithmType type, FileProperties properties, boolean generateKey) {
+    private static Algorithm getAlgorithmInstance(AlgorithmType type) {
         switch (type) {
             case DATA_ENCRYPTION_STANDARD:
-                return getDataEncryptionStandardInstance(properties, generateKey);
+                return new DataEncryptionStandard();
             case MERKLE_HELLMAN:
-                return getMerkleHellmanInstance(properties, generateKey);
+                return new MerkleHellman();
             default:
-                throw new RuntimeException(
-                        String.format(
-                                "Failed to get any algorithm instance: type='%s', properties='%s', generate_key='%b'.",
-                                type,
-                                properties,
-                                generateKey
-                        )
-                );
+                throw new RuntimeException(String.format("Failed to get any algorithm instance: type='%s'.", type));
         }
     }
 
-    private static Algorithm getAlgorithmInstance(FileProperties properties, boolean generateKey, Supplier<Algorithm> supplier1, Supplier<Algorithm> supplier2) {
+    private static String getResult(Algorithm algorithm, FileProperties properties, boolean generateKey) {
         if (!generateKey) {
-            if (properties.getKey() != null) {
-                return supplier1.get();
+            if (properties.getKey() != null && !properties.getKey().isEmpty()) {
+                return algorithm.cipher(properties.getCipher(), properties.getContent(), properties.getKey());
             } else {
                 LOGGER.warn(
                         "Program could not find KEY file, key will be generated for file '{} | {}'.",
@@ -85,24 +97,6 @@ public class Main {
                     properties.getFilename()
             );
         }
-        return supplier2.get();
-    }
-
-    private static Algorithm getDataEncryptionStandardInstance(FileProperties properties, boolean generateKey) {
-        return getAlgorithmInstance(
-                properties,
-                generateKey,
-                () -> new DataEncryptionStandard(properties.getContent(), properties.getKey()),
-                () -> new DataEncryptionStandard(properties.getContent())
-        );
-    }
-
-    private static Algorithm getMerkleHellmanInstance(FileProperties properties, boolean generateKey) {
-        return getAlgorithmInstance(
-                properties,
-                generateKey,
-                () -> new MerkleHellman(properties.getContent(), properties.getKey()),
-                () -> new MerkleHellman(properties.getContent())
-        );
+        return algorithm.cipher(properties.getCipher(), properties.getContent());
     }
 }

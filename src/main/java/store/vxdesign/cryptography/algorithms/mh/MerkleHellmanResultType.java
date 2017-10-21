@@ -6,5 +6,6 @@ package store.vxdesign.cryptography.algorithms.mh;
  */
 public enum MerkleHellmanResultType {
 
-    TEXT_INPUT, BINARY_INPUT, PRIVATE_KEY, PUBLIC_KEY, OUTPUT_SUM
+    TEXT_INPUT, BINARY_INPUT, HEX_INPUT, PRIVATE_KEY, PUBLIC_KEY, OUTPUT_SUMS, INPUT_SUMS, TEXT_OUTPUT, BINARY_OUTPUT,
+    HEX_OUTPUT
 }

@@ -23,13 +23,18 @@ public class CommandLineInterface {
     private Options createOptions() {
         Options options = new Options();
 
-        Option generateKey = new Option("k", "generate-key", true, "Generate one key for encryption of all files");
+        Option cipher = new Option("c", "cipher", true, "Encrypt or decrypt");
+        cipher.setArgs(1);
+        cipher.setValueSeparator('=');
+        options.addOption(cipher);
+
+        Option generateKey = new Option("k", "generate-key", false, "Generate one key for encryption of all files");
         generateKey.setOptionalArg(true);
-        generateKey.setArgs(0);
         options.addOption(generateKey);
 
         Option paths = new Option("p", "path", true, "Paths to files");
         paths.setOptionalArg(true);
+        paths.setValueSeparator('=');
         options.addOption(paths);
 
         return options;

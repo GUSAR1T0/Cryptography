@@ -1,6 +1,7 @@
 package store.vxdesign.cryptography.framework.files;
 
-import store.vxdesign.cryptography.algorithms.AlgorithmType;
+import store.vxdesign.cryptography.framework.enums.AlgorithmType;
+import store.vxdesign.cryptography.framework.enums.Cipher;
 
 /**
  * @author Roman Mashenkin
@@ -10,14 +11,16 @@ public class FileProperties {
 
     private final String filename;
     private final String directory;
+    private final Cipher cipher;
 
     private AlgorithmType algorithmType;
     private String content;
     private String key;
 
-    FileProperties(String filename, String directory) {
+    FileProperties(String filename, String directory, Cipher cipher) {
         this.filename = filename;
         this.directory = directory;
+        this.cipher = cipher;
     }
 
     public String getFilename() {
@@ -26,6 +29,10 @@ public class FileProperties {
 
     public String getDirectory() {
         return directory;
+    }
+
+    public Cipher getCipher() {
+        return cipher;
     }
 
     public AlgorithmType getAlgorithmType() {
@@ -57,6 +64,7 @@ public class FileProperties {
         return "FileProperties [" +
                 "filename='" + filename + '\'' +
                 ", directory='" + directory + '\'' +
+                ", cipher='" + cipher + '\'' +
                 ", algorithmType='" + algorithmType + '\''+
                 ", content='" + content + '\'' +
                 ", key='" + key + '\'' +

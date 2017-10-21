@@ -1,4 +1,4 @@
-package store.vxdesign.cryptography.algorithms;
+package store.vxdesign.cryptography.framework.enums;
 
 import store.vxdesign.cryptography.framework.utilities.EnumUtils;
 
