@@ -3,6 +3,7 @@ package store.vxdesign.cryptography.algorithms.des;
 import store.vxdesign.cryptography.algorithms.AbstractAlgorithm;
 import store.vxdesign.cryptography.framework.enums.Cipher;
 import store.vxdesign.cryptography.framework.utilities.ConverterUtils;
+import store.vxdesign.cryptography.framework.utilities.StringUtils;
 
 /**
  * @author Roman Mashenkin
@@ -27,8 +28,9 @@ public final class DataEncryptionStandard extends AbstractAlgorithm {
 
     private String cipherData(Cipher cipher, String input, String key) {
         // Step 0: prepare for encryption/decryption
-        String[] binaryInputBlocks = ConverterUtils.toBinaryStringBlocks(input,
-                DataEncryptionStandardConstants.SIZE_OF_BLOCKS);
+        String[] binaryInputBlocks = Cipher.ENCRYPT.equals(cipher) ?
+                ConverterUtils.toBinaryStringBlocks(input, DataEncryptionStandardConstants.SIZE_OF_BLOCKS) :
+                input.split(StringUtils.divideOnBlocksPattern(DataEncryptionStandardConstants.SIZE_OF_BLOCKS));
         String binaryKeyBlock = ConverterUtils.toBinaryString(key);
 
         // Step 1: initial permutation
@@ -78,9 +80,7 @@ public final class DataEncryptionStandard extends AbstractAlgorithm {
         String[] binaryOutputBlocks = DataEncryptionStandardUtils.executeFinalPermutation(preparingFinalPermutation);
 
         return DataEncryptionStandardUtils.getStringResult(
-                input,
                 binaryInputBlocks,
-                key,
                 binaryKeyBlock,
                 binaryOutputBlocks
         );

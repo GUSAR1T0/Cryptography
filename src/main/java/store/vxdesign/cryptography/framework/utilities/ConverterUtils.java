@@ -46,7 +46,7 @@ public final class ConverterUtils {
         return builder.toString();
     }
 
-    public static String toTextString(String[] binaryStringBlocks) {
+    public static String toTextString(String... binaryStringBlocks) {
         StringBuilder builder = new StringBuilder();
 
         for (String block : binaryStringBlocks) {
@@ -60,7 +60,7 @@ public final class ConverterUtils {
         return builder.toString();
     }
 
-    public static String toHexString(String[] binaryStringBlocks) {
+    public static String toHexString(String... binaryStringBlocks) {
         StringBuilder builder = new StringBuilder();
 
         for (String block : binaryStringBlocks) {

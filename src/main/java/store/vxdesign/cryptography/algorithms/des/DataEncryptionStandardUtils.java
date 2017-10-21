@@ -100,15 +100,15 @@ final class DataEncryptionStandardUtils {
         return builder.toString();
     }
 
-    static String getStringResult(String input, String[] binaryInputBlocks, String key, String binaryKeyBlock, String[] binaryOutputBlocks) {
+    static String getStringResult(String[] binaryInputBlocks, String binaryKeyBlock, String[] binaryOutputBlocks) {
         Map<DataEncryptionStandardResultType, String> resultMap = new EnumMap<>(DataEncryptionStandardResultType.class);
 
-        resultMap.put(DataEncryptionStandardResultType.TEXT_INPUT, input);
+        resultMap.put(DataEncryptionStandardResultType.TEXT_INPUT, ConverterUtils.toTextString(binaryInputBlocks));
         resultMap.put(DataEncryptionStandardResultType.BINARY_INPUT, Arrays.stream(binaryInputBlocks).collect(Collectors.joining()));
         resultMap.put(DataEncryptionStandardResultType.HEX_INPUT, ConverterUtils.toHexString(binaryInputBlocks));
-        resultMap.put(DataEncryptionStandardResultType.TEXT_KEY, key);
+        resultMap.put(DataEncryptionStandardResultType.TEXT_KEY, ConverterUtils.toTextString(binaryKeyBlock));
         resultMap.put(DataEncryptionStandardResultType.BINARY_KEY, binaryKeyBlock);
-        resultMap.put(DataEncryptionStandardResultType.HEX_KEY, ConverterUtils.toHexString(new String[]{binaryKeyBlock}));
+        resultMap.put(DataEncryptionStandardResultType.HEX_KEY, ConverterUtils.toHexString(binaryKeyBlock));
         resultMap.put(DataEncryptionStandardResultType.TEXT_OUTPUT, ConverterUtils.toTextString(binaryOutputBlocks));
         resultMap.put(DataEncryptionStandardResultType.BINARY_OUTPUT, Arrays.stream(binaryOutputBlocks).collect(Collectors.joining()));
         resultMap.put(DataEncryptionStandardResultType.HEX_OUTPUT, ConverterUtils.toHexString(binaryOutputBlocks));

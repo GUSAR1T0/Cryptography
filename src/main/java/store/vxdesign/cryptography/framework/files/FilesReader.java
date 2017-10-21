@@ -57,7 +57,10 @@ public final class FilesReader {
                 String filenameWithoutExtension = getFilenameWithoutExtension(file);
                 Cipher cipherForFile = !cipher.equals(Cipher.ALL) ? cipher : getCipher(file);
                 FileProperties fileProperties = filePropertiesList.stream()
-                        .filter(properties -> properties.getFilename().equals(filenameWithoutExtension))
+                        .filter(properties ->
+                                properties.getFilename().equals(filenameWithoutExtension) &&
+                                        properties.getCipher().equals(cipherForFile)
+                        )
                         .findFirst()
                         .orElse(new FileProperties(filenameWithoutExtension, file.getParent(), cipherForFile));
 

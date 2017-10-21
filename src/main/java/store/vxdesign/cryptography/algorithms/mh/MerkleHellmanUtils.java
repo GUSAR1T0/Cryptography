@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
  * @author Roman Mashenkin
  * @since 19.10.2017
  */
-class MerkleHellmanUtils {
+final class MerkleHellmanUtils {
 
     static List<Integer> parseStringSequence(String sequence) {
         return Arrays.stream(sequence.split(",\\s+|\\s+|,"))
@@ -144,11 +144,11 @@ class MerkleHellmanUtils {
         return binaryOutputBlocks;
     }
 
-    static String getStringResult(String input, String[] binaryInputBlocks, List<Integer> superincreasingSequence,
+    static String getStringResult(String[] binaryInputBlocks, List<Integer> superincreasingSequence,
                                   int modulus, int multiplier, List<Integer> publicKey, List<Integer> outputSums) {
         Map<MerkleHellmanResultType, String> resultMap = new EnumMap<>(MerkleHellmanResultType.class);
 
-        resultMap.put(MerkleHellmanResultType.TEXT_INPUT, input);
+        resultMap.put(MerkleHellmanResultType.TEXT_INPUT, ConverterUtils.toTextString(binaryInputBlocks));
         resultMap.put(MerkleHellmanResultType.BINARY_INPUT, Arrays.stream(binaryInputBlocks).collect(Collectors.joining()));
         resultMap.put(MerkleHellmanResultType.HEX_INPUT, ConverterUtils.toHexString(binaryInputBlocks));
         resultMap.put(MerkleHellmanResultType.PRIVATE_KEY,

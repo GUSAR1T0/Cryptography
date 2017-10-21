@@ -33,7 +33,6 @@ public final class MerkleHellman extends AbstractAlgorithm {
         List<Integer> outputSums = MerkleHellmanUtils.getOutputSums(binaryInputBlocks, publicKey);
 
         return MerkleHellmanUtils.getStringResult(
-                input,
                 binaryInputBlocks,
                 superincreasingSequence,
                 modulus,
