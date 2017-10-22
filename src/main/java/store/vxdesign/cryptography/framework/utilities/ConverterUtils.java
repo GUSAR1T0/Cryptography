@@ -1,3 +1,7 @@
+/*
+ * Copyright 2017 Roman Mashenkin
+ * Licensed under the Apache License, Version 2.0
+ */
 package store.vxdesign.cryptography.framework.utilities;
 
 import java.util.Arrays;

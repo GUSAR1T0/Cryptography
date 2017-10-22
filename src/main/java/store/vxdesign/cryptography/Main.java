@@ -1,13 +1,17 @@
+/*
+ * Copyright 2017 Roman Mashenkin
+ * Licensed under the Apache License, Version 2.0
+ */
 package store.vxdesign.cryptography;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import store.vxdesign.cryptography.algorithms.Algorithm;
-import store.vxdesign.cryptography.framework.enums.AlgorithmType;
 import store.vxdesign.cryptography.algorithms.des.DataEncryptionStandard;
 import store.vxdesign.cryptography.algorithms.mh.MerkleHellman;
 import store.vxdesign.cryptography.framework.cli.CommandLineInterface;
+import store.vxdesign.cryptography.framework.enums.AlgorithmType;
 import store.vxdesign.cryptography.framework.enums.Cipher;
 import store.vxdesign.cryptography.framework.files.FileProperties;
 import store.vxdesign.cryptography.framework.files.FilesReader;
@@ -45,7 +49,7 @@ public class Main {
         }
 
         List<FileProperties> filePropertiesList = FilesReader.readFiles(cipher, paths);
-        for (AlgorithmType type: AlgorithmType.values()) {
+        for (AlgorithmType type : AlgorithmType.values()) {
             filePropertiesList.stream().filter(properties ->
                     type.equals(properties.getAlgorithmType()) && ((Cipher.DECRYPT.equals(
                             properties.getCipher()) &&
