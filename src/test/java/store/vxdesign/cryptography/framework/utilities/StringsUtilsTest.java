@@ -45,8 +45,8 @@ public class StringsUtilsTest {
         map.put("test3key", "value3");
         map.put("testkey4", "value4");
         map.put("keytest5", "value5");
-        List<String> lines = Arrays.asList("           key1: value1\r\n", "       key2test: value2\r\n",
-                "       test3key: value3\r\n", "       testkey4: value4\r\n", "       keytest5: value5\r\n");
+        List<String> lines = Arrays.asList("           key1: value1", "       key2test: value2",
+                "       test3key: value3", "       testkey4: value4", "       keytest5: value5");
 
         Object[][] data = new Object[5][6];
 
@@ -79,6 +79,6 @@ public class StringsUtilsTest {
 
     @Test
     public void testCreateLineFromEntry() throws Exception {
-        Assert.assertTrue("Another result is expected", line.equals(StringUtils.createLineFromEntry(entry)));
+        Assert.assertTrue("Another result is expected", StringUtils.createLineFromEntry(entry).contains(line));
     }
 }

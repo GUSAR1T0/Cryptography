@@ -161,7 +161,7 @@ public final class FilesReader {
     }
 
     private static Cipher getCipher(File file) {
-        String[] parent = file.getParent().split("\\\\");
+        String[] parent = file.getParent().split("[\\\\/]");
         Cipher cipher = Cipher.value(parent[parent.length - 1]);
         return cipher != null && !cipher.equals(Cipher.ALL) ? cipher : null;
     }
