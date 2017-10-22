@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -15,3 +16,49 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.1'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+jar {
+    def buildDate = new Date()
+    manifest {
+        attributes(
+                "Manifest-Version": "1.0",
+                "Class-Path": configurations.compile.collect { 'lib/' + it.getName() }.join(' ') + ' resources/',
+                "Main-Class": "store.vxdesign.cryptography.Main",
+                "Implementation-Title": rootProject.name,
+                "Implementation-Version": version,
+                "Build-Jdk": System.getProperty('java.version'),
+                "Source-Compatibility": sourceCompatibility,
+                "Target-Compatibility": targetCompatibility,
+                "Built-By": "Roman Mashenkin",
+                "Built-Date": buildDate
+        )
+    }
+    exclude('decrypt/', 'encrypt/')
+}
+
+task copyRes {
+    file("$buildDir/libs/resources/encrypt").mkdirs()
+    copy {
+        from './src/main/resources/encrypt'
+        into "$buildDir/libs/resources/encrypt"
+    }
+
+    file("$buildDir/libs/resources/decrypt").mkdirs()
+    copy {
+        from './src/main/resources/decrypt'
+        into "$buildDir/libs/resources/decrypt"
+    }
+}
+
+task copyDeps(type: Copy) {
+    def dirName = "$buildDir/libs/lib"
+    file(dirName).mkdirs()
+    from configurations.runtime
+    into "$buildDir/libs/lib"
+}
+
+task copylib(type: Copy) {
+    dependsOn copyDeps
+}
+
+build.dependsOn copylib

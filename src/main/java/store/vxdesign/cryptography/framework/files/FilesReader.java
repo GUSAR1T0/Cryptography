@@ -12,6 +12,7 @@ import store.vxdesign.cryptography.framework.enums.Cipher;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,9 +28,25 @@ import java.util.stream.Collectors;
 public final class FilesReader {
 
     private static final Logger LOGGER = LogManager.getLogger(FilesReader.class);
-    private static final String RESOURCES_DIRECTORY = "src/main/resources/";
-    private static final String ENCRYPT_DIRECTORY = Paths.get(RESOURCES_DIRECTORY, Cipher.ENCRYPT.name().toLowerCase()).toString();
-    private static final String DECRYPT_DIRECTORY = Paths.get(RESOURCES_DIRECTORY, Cipher.DECRYPT.name().toLowerCase()).toString();
+
+    private static String encryptDirectory = "";
+    private static String decryptDirectory = "";
+
+    static {
+        try {
+            encryptDirectory = new File(FilesReader.class.getResource("/" + Cipher.ENCRYPT.name().toLowerCase())
+                    .toURI()).getPath();
+        } catch (URISyntaxException e) {
+            LOGGER.error("Failed to get files from default \"encrypt\" resources directory: {}", e.fillInStackTrace());
+        }
+
+        try {
+            decryptDirectory = new File(FilesReader.class.getResource("/" + Cipher.DECRYPT.name().toLowerCase())
+                    .toURI()).getPath();
+        } catch (URISyntaxException e) {
+            LOGGER.error("Failed to get files from default \"decrypt\" resources directory: {}", e.fillInStackTrace());
+        }
+    }
 
     /**
      * Hidden constructor.
@@ -90,11 +107,11 @@ public final class FilesReader {
     }
 
     private static List<File> getAllFilesFromEncryptDirectory() {
-        return getAllFilesFromDirectory(ENCRYPT_DIRECTORY);
+        return getAllFilesFromDirectory(encryptDirectory);
     }
 
     private static List<File> getAllFilesFromDecryptDirectory() {
-        return getAllFilesFromDirectory(DECRYPT_DIRECTORY);
+        return getAllFilesFromDirectory(decryptDirectory);
     }
 
     private static List<File> getAllFilesFromDirectory(String directory) {
