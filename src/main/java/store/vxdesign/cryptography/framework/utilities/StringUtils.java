@@ -17,8 +17,8 @@ public final class StringUtils {
     private StringUtils() {
     }
 
-    public static String capitalize(String lower) {
-        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1).toLowerCase();
+    public static String capitalize(String text) {
+        return Character.toUpperCase(text.charAt(0)) + text.substring(1).toLowerCase();
     }
 
     public static String divideOnBlocksPattern(int blockSize) {
