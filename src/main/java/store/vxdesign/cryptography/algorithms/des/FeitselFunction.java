@@ -1,3 +1,7 @@
+/*
+ * Copyright 2017 Roman Mashenkin
+ * Licensed under the Apache License, Version 2.0
+ */
 package store.vxdesign.cryptography.algorithms.des;
 
 import store.vxdesign.cryptography.framework.enums.Cipher;
@@ -31,9 +35,9 @@ final class FeitselFunction {
                                 expansionPermutation,
                                 roundKeysPermutation
                                         [
-                                                cipher.equals(Cipher.ENCRYPT) ?
-                                                        round + 1 :
-                                                        DataEncryptionStandardConstants.COUNT_OF_ROUNDS - round
+                                        cipher.equals(Cipher.ENCRYPT) ?
+                                                round + 1 :
+                                                DataEncryptionStandardConstants.COUNT_OF_ROUNDS - round
                                         ]
                         );
                 String[] preparedForSBox = xorResult.split(
