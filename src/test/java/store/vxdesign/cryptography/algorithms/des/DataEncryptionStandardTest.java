@@ -1,3 +1,7 @@
+/*
+ * Copyright 2017 Roman Mashenkin
+ * Licensed under the Apache License, Version 2.0
+ */
 package store.vxdesign.cryptography.algorithms.des;
 
 import org.junit.Assert;
@@ -13,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static store.vxdesign.cryptography.algorithms.des.DataEncryptionStandardConstants.*;
+import static store.vxdesign.cryptography.algorithms.des.DataEncryptionStandardConstants.SIZE_OF_BLOCKS;
 import static store.vxdesign.cryptography.algorithms.des.DataEncryptionStandardResultType.*;
 
 /**
