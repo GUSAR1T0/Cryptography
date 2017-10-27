@@ -5,6 +5,8 @@
 package store.vxdesign.cryptography.algorithms.des;
 
 /**
+ * Data Encryption Standard class of constants.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */

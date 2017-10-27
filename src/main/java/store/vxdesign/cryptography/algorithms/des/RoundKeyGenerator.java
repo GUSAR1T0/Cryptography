@@ -5,6 +5,8 @@
 package store.vxdesign.cryptography.algorithms.des;
 
 /**
+ * Class of round key generation.
+ *
  * @author Roman Mashenkin
  * @since 18.10.2017
  */

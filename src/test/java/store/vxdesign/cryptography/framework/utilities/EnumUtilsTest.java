@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * Enumeration util unit tests class.
+ *
  * @author Roman Mashenkin
  * @since 22.10.2017
  */

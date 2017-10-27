@@ -9,6 +9,8 @@ import store.vxdesign.cryptography.framework.enums.Cipher;
 import java.util.function.Supplier;
 
 /**
+ * Abstract class of algorithm.
+ *
  * @author Roman Mashenkin
  * @since 21.10.2017
  */

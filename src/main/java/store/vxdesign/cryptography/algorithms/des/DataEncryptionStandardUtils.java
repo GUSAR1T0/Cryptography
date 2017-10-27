@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Data Encryption Standard util class.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
+ * Util class for converting.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */
@@ -19,6 +21,13 @@ public final class ConverterUtils {
     private ConverterUtils() {
     }
 
+    /**
+     * Obtains binary blocks from string.
+     *
+     * @param textString simple text.
+     * @param blockSize size of blocks.
+     * @return binary blocks.
+     */
     public static String[] toBinaryStringBlocks(String textString, int blockSize) {
         String binary = toBinaryString(textString);
 
@@ -35,6 +44,12 @@ public final class ConverterUtils {
         return binary.split(StringUtils.divideOnBlocksPattern(blockSize));
     }
 
+    /**
+     * Obtains binary block from string.
+     *
+     * @param textString simple text.
+     * @return binary block.
+     */
     public static String toBinaryString(String textString) {
         byte[] bytes = textString.getBytes();
         StringBuilder builder = new StringBuilder();
@@ -50,6 +65,12 @@ public final class ConverterUtils {
         return builder.toString();
     }
 
+    /**
+     * Obtains string from binary blocks.
+     *
+     * @param binaryStringBlocks binary blocks.
+     * @return string text.
+     */
     public static String toTextString(String... binaryStringBlocks) {
         StringBuilder builder = new StringBuilder();
 
@@ -64,6 +85,12 @@ public final class ConverterUtils {
         return builder.toString();
     }
 
+    /**
+     * Obtains HEX string from binary blocks.
+     *
+     * @param binaryStringBlocks binary blocks.
+     * @return HEX string text.
+     */
     public static String toHexString(String... binaryStringBlocks) {
         StringBuilder builder = new StringBuilder();
 

@@ -8,6 +8,8 @@ import store.vxdesign.cryptography.framework.enums.Cipher;
 import store.vxdesign.cryptography.framework.utilities.StringUtils;
 
 /**
+ * Class of execution Feitsel function.
+ *
  * @author Roman Mashenkin
  * @since 18.10.2017
  */

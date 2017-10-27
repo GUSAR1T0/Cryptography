@@ -7,6 +7,8 @@ package store.vxdesign.cryptography.framework.enums;
 import store.vxdesign.cryptography.framework.utilities.EnumUtils;
 
 /**
+ * Class of algorithm types.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */

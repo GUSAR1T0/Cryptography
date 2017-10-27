@@ -12,11 +12,13 @@ import org.junit.runners.Parameterized;
 import java.util.*;
 
 /**
+ * String util unit tests class.
+ *
  * @author Roman Mashenkin
  * @since 22.10.2017
  */
 @RunWith(Parameterized.class)
-public class StringsUtilsTest {
+public class StringUtilsTest {
 
     @Parameterized.Parameter
     public String input;

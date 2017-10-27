@@ -8,6 +8,8 @@ import store.vxdesign.cryptography.framework.utilities.EnumUtils;
 import store.vxdesign.cryptography.framework.utilities.StringUtils;
 
 /**
+ * Class of cipher modes.
+ *
  * @author Roman Mashenkin
  * @since 20.10.2017
  */

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Static class for reading files.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */
@@ -54,6 +56,14 @@ public final class FilesReader {
     private FilesReader() {
     }
 
+    /**
+     * Reads files.
+     *
+     * @param cipher type of {@link Cipher}.
+     * @param paths possible string paths to file.
+     * @return list of {@link FileProperties}.
+     * @throws FileNotFoundException exception will be thrown if path is not correct.
+     */
     public static List<FileProperties> readFiles(Cipher cipher, String[] paths) throws FileNotFoundException {
         List<File> files = Arrays.stream(paths).map(File::new).collect(Collectors.toList());
         List<FileProperties> filePropertiesList = new ArrayList<>();

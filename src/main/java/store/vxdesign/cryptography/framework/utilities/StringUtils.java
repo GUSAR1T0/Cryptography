@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Random;
 
 /**
+ * Util class for string handling.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */
@@ -21,14 +23,32 @@ public final class StringUtils {
     private StringUtils() {
     }
 
+    /**
+     * Obtains capitalized string from any string.
+     *
+     * @param text any string.
+     * @return capitalized string.
+     */
     public static String capitalize(String text) {
         return Character.toUpperCase(text.charAt(0)) + text.substring(1).toLowerCase();
     }
 
+    /**
+     * Obtains string pattern for dividing any string on blocks.
+     *
+     * @param blockSize size of block.
+     * @return string pattern.
+     */
     public static String divideOnBlocksPattern(int blockSize) {
         return String.format("(?<=\\G.{%d})", blockSize);
     }
 
+    /**
+     * Generates some string.
+     *
+     * @param length count of symbols.
+     * @return generated string.
+     */
     public static String generateString(int length) {
         final String digits = "0123456789";
         final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -45,6 +65,12 @@ public final class StringUtils {
         return new String(buffer);
     }
 
+    /**
+     * Creates line for output result.
+     *
+     * @param entry {@link java.util.Map.Entry} key and value which create output line.
+     * @return string line.
+     */
     public static String createLineFromEntry(Map.Entry entry) {
         return String.format("%15s: %s%n", entry.getKey(), entry.getValue());
     }
