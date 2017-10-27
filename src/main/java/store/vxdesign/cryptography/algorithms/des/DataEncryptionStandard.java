@@ -10,6 +10,8 @@ import store.vxdesign.cryptography.framework.utilities.ConverterUtils;
 import store.vxdesign.cryptography.framework.utilities.StringUtils;
 
 /**
+ * Data Encryption Standard class for encryption and decryption some plaintext.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */

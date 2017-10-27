@@ -21,6 +21,8 @@ import static store.vxdesign.cryptography.algorithms.des.DataEncryptionStandardC
 import static store.vxdesign.cryptography.algorithms.des.DataEncryptionStandardResultType.*;
 
 /**
+ * Data Encryption Standard unit tests class.
+ *
  * @author Roman Mashenkin
  * @since 21.10.2017
  */

@@ -8,6 +8,8 @@ import store.vxdesign.cryptography.framework.enums.AlgorithmType;
 import store.vxdesign.cryptography.framework.enums.Cipher;
 
 /**
+ * Class of file properties.
+ *
  * @author Roman Mashenkin
  * @since 18.10.2017
  */

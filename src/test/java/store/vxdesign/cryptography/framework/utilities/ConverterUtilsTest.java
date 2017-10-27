@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Converter util unit tests class.
+ *
  * @author Roman Mashenkin
  * @since 22.10.2017
  */

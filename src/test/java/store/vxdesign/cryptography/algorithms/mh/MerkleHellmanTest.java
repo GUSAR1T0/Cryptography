@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 import static store.vxdesign.cryptography.algorithms.mh.MerkleHellmanResultType.*;
 
 /**
+ * Merkle-Hellman knapsack cryptosystem unit tests class.
+ *
  * @author Roman Mashenkin
  * @since 21.10.2017
  */

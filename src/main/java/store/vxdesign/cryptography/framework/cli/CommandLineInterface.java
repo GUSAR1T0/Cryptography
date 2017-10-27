@@ -7,6 +7,8 @@ package store.vxdesign.cryptography.framework.cli;
 import org.apache.commons.cli.*;
 
 /**
+ * Class for creation of command line interface.
+ *
  * @author Roman Mashenkin
  * @since 18.10.2017
  */
@@ -27,16 +29,16 @@ public class CommandLineInterface {
     private Options createOptions() {
         Options options = new Options();
 
-        Option cipher = new Option("c", "cipher", true, "Encrypt or decrypt");
+        Option cipher = new Option("c", "cipher", true, "Encrypt or decrypt, if it is not stated, program will do both cipher modes simultaneously");
         cipher.setArgs(1);
         cipher.setValueSeparator('=');
         options.addOption(cipher);
 
-        Option generateKey = new Option("k", "generate-key", false, "Generate one key for encryption of all files");
+        Option generateKey = new Option("k", "generate-key", false, "Generate one key for encryption of all files, it is only for data which should be encrypted");
         generateKey.setOptionalArg(true);
         options.addOption(generateKey);
 
-        Option paths = new Option("p", "path", true, "Paths to files");
+        Option paths = new Option("p", "path", true, "Paths to files, can be used several times or never");
         paths.setOptionalArg(true);
         paths.setValueSeparator('=');
         options.addOption(paths);
@@ -44,6 +46,11 @@ public class CommandLineInterface {
         return options;
     }
 
+    /**
+     * Obtains {@link CommandLine} instance with parsed arguments.
+     *
+     * @return {@link CommandLine} instance.
+     */
     public CommandLine getParsedArguments() {
         try {
             return parser.parse(options, args);

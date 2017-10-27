@@ -11,6 +11,8 @@ import store.vxdesign.cryptography.framework.utilities.ConverterUtils;
 import java.util.List;
 
 /**
+ * Merkle-Hellman knapsack cryptosystem class for encryption and decryption some plaintext.
+ *
  * @author Roman Mashenkin
  * @since 19.10.2017
  */

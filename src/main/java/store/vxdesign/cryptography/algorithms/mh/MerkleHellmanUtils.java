@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
+ * Merkle-Hellman knapsack cryptosystem util class.
+ *
  * @author Roman Mashenkin
  * @since 19.10.2017
  */

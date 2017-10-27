@@ -5,6 +5,8 @@
 package store.vxdesign.cryptography.algorithms.mh;
 
 /**
+ * Merkle-Hellman knapsack cryptosystem class of constants.
+ *
  * @author Roman Mashenkin
  * @since 19.10.2017
  */

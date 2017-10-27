@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Main class of application.
+ *
  * @author Roman Mashenkin
  * @since 17.10.2017
  */

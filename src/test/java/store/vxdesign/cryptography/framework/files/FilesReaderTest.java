@@ -12,6 +12,8 @@ import store.vxdesign.cryptography.framework.enums.Cipher;
 import java.util.List;
 
 /**
+ * Files reader unit tests class.
+ *
  * @author Roman Mashenkin
  * @since 22.10.2017
  */

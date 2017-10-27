@@ -5,6 +5,8 @@
 package store.vxdesign.cryptography.algorithms.mh;
 
 /**
+ * Merkle-Hellman knapsack cryptosystem enumeration class of results.
+ *
  * @author Roman Mashenkin
  * @since 20.10.2017
  */

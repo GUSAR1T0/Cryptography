@@ -5,6 +5,8 @@
 package store.vxdesign.cryptography.algorithms.des;
 
 /**
+ * Data Encryption Standard enumeration class of results.
+ *
  * @author Roman Mashenkin
  * @since 18.10.2017
  */
