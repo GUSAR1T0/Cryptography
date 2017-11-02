@@ -20,7 +20,7 @@ public final class MerkleHellman extends AbstractAlgorithm {
 
     @Override
     public String cipher(Cipher cipher, String input) {
-        return cipher(cipher, input, MerkleHellmanUtils::generateKey);
+        return cipher(cipher, input, MerkleHellmanUtils.generateKey(input.length()));
     }
 
     @Override

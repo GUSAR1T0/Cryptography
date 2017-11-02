@@ -27,8 +27,8 @@ final class MerkleHellmanUtils {
                 .collect(Collectors.toList());
     }
 
-    static String generateKey() {
-        List<Integer> superincreasingSequence = generateSuperincreasingSequence();
+    static String generateKey(int length) {
+        List<Integer> superincreasingSequence = generateSuperincreasingSequence(length);
         String superincreasingSequenceString = superincreasingSequence.stream()
                 .map(integer -> Integer.toString(integer))
                 .collect(Collectors.joining(", "));
@@ -57,9 +57,9 @@ final class MerkleHellmanUtils {
         return outputSums;
     }
 
-    private static List<Integer> generateSuperincreasingSequence() {
-        List<Integer> lowerBound = getLowerBound(MerkleHellmanConstants.BEGIN_NUMBER, MerkleHellmanConstants.SEQUENCE_ELEMENTS);
-        List<Integer> upperBound = getUpperBound(MerkleHellmanConstants.END_NUMBER, MerkleHellmanConstants.SEQUENCE_ELEMENTS);
+    private static List<Integer> generateSuperincreasingSequence(int length) {
+        List<Integer> lowerBound = getLowerBound(MerkleHellmanConstants.BEGIN_NUMBER, length);
+        List<Integer> upperBound = getUpperBound(MerkleHellmanConstants.END_NUMBER, length);
         List<Integer> list = new ArrayList<>();
         Random random = new SecureRandom();
         while (list.size() < 8) {
