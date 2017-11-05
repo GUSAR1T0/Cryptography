@@ -53,16 +53,16 @@ public class MerkleHellmanTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        List<String> plaintextList = Arrays.asList("abasiufds", "23456wfs", "Fib9vTbvt6");
+        List<String> plaintextList = Arrays.asList("abasiufd", "23456wfs", "Fib9vTbv");
         List<String> keyList = Arrays.asList(
                 "2, 7, 11, 21, 42, 89, 180, 354; 881; 588",
                 "2, 14, 22, 54, 105, 221, 485, 998; 3797; 1456",
                 "1, 3, 24, 46, 114, 246, 471, 930; 3709; 1359"
         );
         List<String> ciphertextList = Arrays.asList(
-                "1129, 1013, 1129, 1263, 1157, 1496, 1366, 1246, 1263",
+                "1129, 1013, 1129, 1263, 1157, 1496, 1366, 1246",
                 "8055, 10689, 7168, 9802, 10883, 14916, 9598, 12088",
-                "3013, 8979, 5453, 11781, 9127, 4042, 5453, 9127, 6986, 8759"
+                "3013, 8979, 5453, 11781, 9127, 4042, 5453, 9127"
         );
 
         Object[][] data = new Object[3][8];

@@ -27,12 +27,13 @@ final class MerkleHellmanUtils {
                 .collect(Collectors.toList());
     }
 
-    static String generateKey() {
-        List<Integer> superincreasingSequence = generateSuperincreasingSequence();
+    static String generateKey(int length) {
+        List<Integer> superincreasingSequence = generateSuperincreasingSequence(length);
         String superincreasingSequenceString = superincreasingSequence.stream()
                 .map(integer -> Integer.toString(integer))
                 .collect(Collectors.joining(", "));
-        int modulus = generateNumber(superincreasingSequence.stream().mapToInt(Integer::intValue).sum());
+        int modulus = generateNumber(superincreasingSequence.stream().mapToInt(Integer::intValue).sum(),
+                MerkleHellmanConstants.STEP_NUMBER, length);
         int multiplier = generateCoprimeNumber(MerkleHellmanConstants.BEGIN_NUMBER, modulus);
         return String.format("%s; %s; %s", superincreasingSequenceString, modulus, multiplier);
     }
@@ -57,12 +58,12 @@ final class MerkleHellmanUtils {
         return outputSums;
     }
 
-    private static List<Integer> generateSuperincreasingSequence() {
-        List<Integer> lowerBound = getLowerBound(MerkleHellmanConstants.BEGIN_NUMBER, MerkleHellmanConstants.SEQUENCE_ELEMENTS);
-        List<Integer> upperBound = getUpperBound(MerkleHellmanConstants.END_NUMBER, MerkleHellmanConstants.SEQUENCE_ELEMENTS);
+    private static List<Integer> generateSuperincreasingSequence(int length) {
+        List<Integer> lowerBound = getLowerBound(MerkleHellmanConstants.BEGIN_NUMBER, length);
+        List<Integer> upperBound = getUpperBound(MerkleHellmanConstants.STEP_NUMBER, length);
         List<Integer> list = new ArrayList<>();
         Random random = new SecureRandom();
-        while (list.size() < 8) {
+        while (list.size() < length) {
             int integer = random.ints(1, lowerBound.get(list.size()), upperBound.get(list.size())).sum();
             if (integer > list.stream().mapToInt(Integer::intValue).sum()) {
                 list.add(integer);
@@ -80,9 +81,13 @@ final class MerkleHellmanUtils {
         return lowerBound;
     }
 
-    private static List<Integer> getUpperBound(int end, int sequenceSize) {
+    private static int getHighestValue(int step, int sequenceSize) {
+        return (int) Math.pow(step, (double) sequenceSize / 8) * sequenceSize;
+    }
+
+    private static List<Integer> getUpperBound(int step, int sequenceSize) {
         List<Integer> upperBound = new ArrayList<>();
-        upperBound.add(end);
+        upperBound.add(getHighestValue(step, sequenceSize));
         for (int i = sequenceSize; i > 1; i--) {
             upperBound.add(0, upperBound.get(0) / 2);
         }
@@ -94,9 +99,8 @@ final class MerkleHellmanUtils {
                 .filter(multiplier -> getGreatestCommonDivisor(multiplier, modulus) == 1));
     }
 
-    private static int generateNumber(int begin) {
-        return getRandomNumber(() -> IntStream.rangeClosed(begin + 1,
-                MerkleHellmanConstants.END_NUMBER * MerkleHellmanConstants.SEQUENCE_ELEMENTS)
+    private static int generateNumber(int begin, int step, int sequenceSize) {
+        return getRandomNumber(() -> IntStream.rangeClosed(begin + 1, getHighestValue(step, sequenceSize) * 8)
                 .filter(i -> IntStream.rangeClosed(2, (int) Math.sqrt(i)).allMatch(j -> i % j != 0)));
     }
 

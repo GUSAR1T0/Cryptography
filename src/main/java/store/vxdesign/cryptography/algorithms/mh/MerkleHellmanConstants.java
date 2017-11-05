@@ -20,9 +20,7 @@ final class MerkleHellmanConstants {
 
     static final int SIZE_OF_BLOCKS = Byte.SIZE;
 
-    static final int SEQUENCE_ELEMENTS = 8;
-
     static final int BEGIN_NUMBER = 1;
 
-    static final int END_NUMBER = 1000;
+    static final int STEP_NUMBER = 125;
 }
