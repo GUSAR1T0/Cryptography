@@ -1,4 +1,4 @@
-group 'store.vxdesign.cryptography'
+group 'store.vxdesign.apps'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
